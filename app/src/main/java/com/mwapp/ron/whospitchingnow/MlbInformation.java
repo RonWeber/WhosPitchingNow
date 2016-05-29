@@ -8,16 +8,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -101,11 +95,11 @@ public class MlbInformation {
         String expectedTag;
         if (statusString.equals("In Progress"))
         {
-            boolean topInning = status.getNamedItem("top_inning").equals("Y");
-            expectedTag = (weAreAway ^ topInning) ? "opposing_pitcher" : "pitcher";
+            boolean topInning = status.getNamedItem("top_inning").getNodeValue().equals("Y");
+            expectedTag = (weAreAway ^ topInning) ? "pitcher" : "opposing_pitcher";
 
         }
-        else if (statusString.equals("Preview"))
+        else if (statusString.equals("Preview") || statusString.equals("Pre-Game"))
         {
             expectedTag = weAreAway ? "away_probable_pitcher" : "home_probable_pitcher";
         }
@@ -119,7 +113,7 @@ public class MlbInformation {
             if (childTags.item(i).getNodeName().equals(expectedTag)) //This is the pitcher tag.
             {
                 NamedNodeMap attributes = childTags.item(i).getAttributes();
-                pitcherName = attributes.getNamedItem("first_name").getNodeValue() + " " + attributes.getNamedItem("last_name").getNodeValue();
+                pitcherName = attributes.getNamedItem("first").getNodeValue() + " " + attributes.getNamedItem("last").getNodeValue();
                 era = attributes.getNamedItem("era").getNodeValue();
                 wins = attributes.getNamedItem("wins").getNodeValue();
                 losses = attributes.getNamedItem("losses").getNodeValue();
