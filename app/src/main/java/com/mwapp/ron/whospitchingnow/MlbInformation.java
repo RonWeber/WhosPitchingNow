@@ -81,7 +81,7 @@ public class MlbInformation {
     {
         this.opposingTeam = weAreAway ?
                 gameAttributes.getNamedItem("home_team_city").getNodeValue() + " " + gameAttributes.getNamedItem("home_team_name").getNodeValue() :
-                gameAttributes.getNamedItem("away_team_city").getNodeValue() + " " + gameAttributes.getNamedItem("away_team_name");
+                gameAttributes.getNamedItem("away_team_city").getNodeValue() + " " + gameAttributes.getNamedItem("away_team_name").getNodeValue();
 
         Node statusNode = game.getFirstChild().getNextSibling();
         NamedNodeMap status = statusNode.getAttributes();
@@ -97,7 +97,6 @@ public class MlbInformation {
         {
             boolean topInning = status.getNamedItem("top_inning").getNodeValue().equals("Y");
             expectedTag = (weAreAway ^ topInning) ? "pitcher" : "opposing_pitcher";
-
         }
         else if (statusString.equals("Preview") || statusString.equals("Pre-Game"))
         {
