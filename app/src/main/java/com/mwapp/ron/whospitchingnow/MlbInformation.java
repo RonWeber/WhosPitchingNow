@@ -30,6 +30,7 @@ public class MlbInformation {
     private String wins, losses;
     private String pitcherNumber;
     private String opposingTeam;
+    private String pitcherID;
 
     private boolean weAreAway;
 
@@ -112,6 +113,7 @@ public class MlbInformation {
             if (childTags.item(i).getNodeName().equals(expectedTag)) //This is the pitcher tag.
             {
                 NamedNodeMap attributes = childTags.item(i).getAttributes();
+                pitcherID = attributes.getNamedItem("id").getNodeValue();
                 pitcherName = attributes.getNamedItem("first").getNodeValue() + " " + attributes.getNamedItem("last").getNodeValue();
                 era = attributes.getNamedItem("era").getNodeValue();
                 wins = attributes.getNamedItem("wins").getNodeValue();
@@ -134,6 +136,8 @@ public class MlbInformation {
     public String getOpposingTeam() {
         return opposingTeam;
     }
+
+    public String getID() {return pitcherID; }
 
     public String getOtherStatlist()
     {

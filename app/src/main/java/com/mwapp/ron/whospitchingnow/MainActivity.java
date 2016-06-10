@@ -1,19 +1,23 @@
 package com.mwapp.ron.whospitchingnow;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TEAM_ID = "cin"; //If we expand to multiple teams, I'll need to change this.
@@ -51,7 +55,37 @@ public class MainActivity extends AppCompatActivity {
                 Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
                 toolbar.setTitle("Vs. " + result.getOpposingTeam());
 
-                if (progress != null) progress.dismiss();
+                LoadPicture loadPicture = new LoadPicture();
+                loadPicture.execute("http://mlb.mlb.com/mlb/images/players/head_shot/" + result.getID() + ".jpg");
+            }
+            if (progress != null) progress.dismiss();
+        }
+    }
+
+    private  class LoadPicture extends AsyncTask<String, Void, Drawable> {
+        @Override
+        protected Drawable doInBackground(String... fileName)
+        {
+            try {
+                URL url = new URL(fileName[0]);
+                InputStream in = url.openStream();
+                BufferedInputStream stream = new BufferedInputStream(in);
+                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                return new BitmapDrawable(getResources(), bitmap);
+
+            } catch (Exception e) {
+                //The infamous exception nonhandler.  If we can't get a picture, bugging the user about it would only be annoying.
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Drawable result)
+        {
+            if (result != null) {
+                ImageView batterPicture = (ImageView) findViewById(R.id.batterPicture);
+                batterPicture.setImageDrawable(result);
             }
         }
     }

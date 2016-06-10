@@ -39,7 +39,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Other Stats"
         android:id="@+id/otherStats"
+        android:singleLine="false"
+        android:layout_below="@+id/batterPicture"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/batterPicture"
         android:layout_below="@+id/era"
-        android:layout_centerHorizontal="true"
-        android:singleLine="false" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
